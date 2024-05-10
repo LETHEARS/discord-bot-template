@@ -1,0 +1,14 @@
+{
+    "database": {
+        "url": "mongodb://localhost:27017"
+    },
+    "server": {
+        "port": 5000
+    },
+    "bot": {
+        "token": "",
+        "redirectUri": "",
+        "clientId": "",
+        "clientSecret": ""
+    }
+}
