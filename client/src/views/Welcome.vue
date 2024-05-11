@@ -76,7 +76,7 @@ watchEffect(() => {
 
 const onSubmit = () => {
     isLoaded.value = false;
-    store.dispatch("saveGuildState", {
+    store.dispatch("SAVE_GUILD_STATE", {
         guild_id: route.params.id as string,
         data: {
             isActive: isActive.value,
