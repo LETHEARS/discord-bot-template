@@ -9,34 +9,6 @@ const ActionTypes = {
     SAVE_GUILD_STATE: "saveGuildState",
 };
 
-const handleRateLimit = async (
-    err: any,
-    retryCallback: () => Promise<any>
-): Promise<void> => {
-    if (err?.response?.data?.message === "You are being rate limited.") {
-        const retryAfter = err.response.data.retry_after || 1;
-        setTimeout(retryCallback, retryAfter * 1300);
-    }
-};
-
-const handleUnauthorized = (): void => {
-    const router = useRouter();
-    router.push("/logout");
-};
-
-const makeRequest = async (requestFunc: () => Promise<any>) => {
-    try {
-        const response = await requestFunc();
-        return response;
-    } catch (err: any) {
-        await handleRateLimit(err, () => makeRequest(requestFunc));
-        if (err?.response?.status === 401) {
-            handleUnauthorized();
-        }
-        throw err;
-    }
-};
-
 export default {
     async initUser() {
         const userData: UserData = JSON.parse(
@@ -55,7 +27,7 @@ export default {
         };
 
         try {
-            const response = await makeRequest(getUser);
+            const response = await this.makeRequest(getUser);
             if (response.data.success) {
                 (this as any).getters._getUser = response.data;
                 (this as any)._isLogin = true;
@@ -78,7 +50,7 @@ export default {
             return await getReq("/guilds");
         };
 
-        const response = await makeRequest(getGuilds);
+        const response = await this.makeRequest(getGuilds);
         if (response.data.success) {
             (this as any).getters._getGuilds = response.data;
         }
@@ -87,7 +59,7 @@ export default {
     },
 
     async dispatch(
-        actionType: keyof "saveGuildState" | string,
+        actionType: keyof typeof ActionTypes,
         { guild_id, data }: { guild_id?: string; data: object }
     ) {
         switch (actionType) {
@@ -96,5 +68,31 @@ export default {
             default:
                 throw new Error(`Unknown action type: ${actionType as string}`);
         }
+    },
+
+    async makeRequest(this: any, requestFunc: () => Promise<any>) {
+        try {
+            const response = await requestFunc();
+            return response;
+        } catch (err: any) {
+            await this.handleRateLimit(err, () => this.makeRequest(requestFunc));
+            if (err?.response?.status === 401) {
+                console.log(err.response.data);
+                this.handleUnauthorized();
+            }
+            throw err;
+        }
+    },
+
+    handleRateLimit(err: any, retryCallback: () => Promise<any>) {
+        if (err?.response?.data?.message === "You are being rate limited.") {
+            const retryAfter = err.response.data.retry_after || 1;
+            setTimeout(retryCallback, retryAfter * 1300);
+        }
+    },
+
+    handleUnauthorized() {
+        const router = useRouter();
+        router.push("/logout");
     },
 };
