@@ -1,0 +1,14 @@
+{
+    "database": {
+        "url": "mongodb://localhost:27017/undefined.exe-discord"
+    },
+    "server": {
+        "port": 5000
+    },
+    "bot": {
+        "token": "",
+        "redirectUri": "http://localhost:3000/callback",
+        "clientId": "1154072030388428923",
+        "clientSecret": ""
+    }
+}
