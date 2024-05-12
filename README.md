@@ -47,4 +47,4 @@ This project uses [`dafont`](https://www.dafont.com/) to automatically optimize 
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=vue.js&utm_source=create-vue-app&utm_campaign=create-vue-app-readme) from the creators of Next.js.
 
 ## Learn More
-![image](https://github.com/deverays/discord-bot-dashboard/assets/129968185/49a2ed49-85c2-433e-a888-d8b5739acef7)
+![image](https://github.com/deverays/discord-bot-template/assets/129968185/e28da20d-d90e-4dcf-8e28-7844f70c3a33)
