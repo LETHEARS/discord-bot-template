@@ -1,4 +1,4 @@
-This is a [Account Transactions](https://discord.gg/7wndxUeDcM)
+This is a [Discord Bot Template](https://discord.gg/7wndxUeDcM)
 
 ## Getting Started
 
