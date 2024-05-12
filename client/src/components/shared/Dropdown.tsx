@@ -330,8 +330,8 @@ const ChannelsDropdown = defineComponent({
             class={classNames(
               "transition-all group flex justify-between py-3 px-4 w-full rounded-lg border border-solid dark:hover:border-opacity-60 text-opacity-60 hover:text-opacity-100 dark:text-opacity-60 dark:hover:text-opacity-100 text-black dark:text-gray-100 bg-light-300 dark:bg-dark-200 dark:border-dark-100",
               isOpen
-                ? "ring-opacity-30 ring-[4px] ring-teal-700"
-                : "dark:hover:border-opacity-60 md:hover:border-teal-400"
+                ? "ring-opacity-30 ring-[4px] ring-blue-500"
+                : "dark:hover:border-opacity-60 md:hover:border-blue-600"
             )}
           >
             <div class="flex items-center gap-x-3">
