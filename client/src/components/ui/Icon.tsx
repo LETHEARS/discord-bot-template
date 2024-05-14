@@ -1,7 +1,7 @@
-import { defineComponent } from "vue";
+import { defineComponent, h } from "vue";
+import { cn } from "../../lib/utilts";
 
 const ArrowIcon = defineComponent({
-  name: "ArrowIcon",
   props: {
     isActive: {
       type: Boolean,
@@ -14,14 +14,14 @@ const ArrowIcon = defineComponent({
   },
   render() {
     const { isActive, className } = this;
-    return (
+    return h(
       <svg
         width="24"
         height="24"
         viewBox="0 0 24 24"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
-        class={`${className} ${isActive ? "-scale-100" : "scale-100"}`}
+        class={cn(isActive ? "-scale-100" : "scale-100", className)}
       >
         <path
           d="M7 14.5l5-5 5 5"
@@ -34,7 +34,6 @@ const ArrowIcon = defineComponent({
 });
 
 const AddIcon = defineComponent({
-  name: "AddIcon",
   props: {
     className: {
       type: String,
@@ -42,7 +41,7 @@ const AddIcon = defineComponent({
     },
   },
   render() {
-    return (
+    return h(
       <svg
         class={this.className}
         width="24"
@@ -72,9 +71,8 @@ const AddIcon = defineComponent({
 });
 
 const CategoryIcon = defineComponent({
-  name: "CategoryIcon",
   render() {
-    return (
+    return h(
       <svg
         width="24"
         height="24"
@@ -97,9 +95,8 @@ const CategoryIcon = defineComponent({
 });
 
 const HelloIcon = defineComponent({
-  name: "HelloIcon",
   render() {
-    return (
+    return h(
       <svg
         width="24"
         height="24"

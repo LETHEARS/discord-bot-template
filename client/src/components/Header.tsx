@@ -1,7 +1,7 @@
-import { defineComponent, ref, onMounted, onUnmounted } from "vue";
-import classNames from "classnames";
+import { defineComponent, ref, onMounted, onUnmounted, h } from "vue";
 import { ProfileDropdown } from "./shared/Dropdown";
 import Logo from "../assets/images/logo.png";
+import { cn } from "../lib/utilts";
 
 const AppHeader = defineComponent({
   name: "AppHeader",
@@ -27,9 +27,9 @@ const AppHeader = defineComponent({
     return { showHeader };
   },
   render() {
-    return (
+    return h(
       <div
-        class={classNames(
+        class={cn(
           "transition-all fixed top-0 max-lg:h-16 lg:h-20 flex items-center justify-between lg:justify-around w-full max-lg:pl-[5%] max-lg:pr-[5%] z-[998]",
           this.showHeader ? "translate-y-0" : "-translate-y-full",
           "bg-light-200 dark:bg-dark-100 duration-500"
@@ -56,9 +56,9 @@ const DashboardHeader = defineComponent({
   name: "DashboardHeader",
   emits: ["showLeftside"],
   render() {
-    return (
+    return h(
       <div
-        class={classNames(
+        class={cn(
           "transition-all fixed top-0 max-lg:h-16 lg:h-20 flex items-center justify-between w-full pl-[2%] pr-[2%] z-[997]",
           "bg-light-200 dark:bg-dark-100"
         )}

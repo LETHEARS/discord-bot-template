@@ -11,9 +11,8 @@ import { Progress, Loading } from "./components/shared/Loader";
 
 const { store } = imports();
 
-store._isProgress = 20;
-
-store._isLoading = true;
+store._isProgress = 10;
+store._isLoading = true
 
 store.initUser().then(() => {
   store._isProgress = 40;

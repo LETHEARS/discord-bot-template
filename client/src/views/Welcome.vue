@@ -1,5 +1,5 @@
 <template>
-    <dashboard-layout :isLoaded="isLoaded" @save="onSubmit" :showSaveCard="showSaveCard"
+    <dashboard-container :isSaveLoaded="isLoaded" @save="onSubmit" :showSaveCard="showSaveCard"
         :title="$t('Dashboard.Essantials.Welcome.title')" :description="$t('Dashboard.Essantials.Welcome.description')">
         <BaseToggleCard @toggle="isActive = !isActive" :isOpen="isActive"
             :title="$t('Dashboard.Essantials.Welcome.CheckCard.title')"
@@ -14,14 +14,14 @@
                 :channels="currentGuild.channels.filter((channel: any) => channel.type == 0)"
                 :selectedChannel="state.channel_id == 'select' ? 'select' : currentGuild.channels?.find((channel: any) => channel.id == state.channel_id)" />
         </BaseCard>
-    </dashboard-layout>
+    </dashboard-container>
 </template>
 
 <script setup lang="ts">
-import { BaseToggleCard, BaseCard } from "../components/ui/Card";
-import { ChannelsDropdown } from "../components/shared/Dropdown";
 import imports from "../utils/imports";
-import eventListenerMixin from "../plugins/eventListenerMixin";
+import eventListenerMixin from "../mixins/eventListener";
+import { ChannelsDropdown } from "../components/shared/Dropdown";
+import { BaseToggleCard, BaseCard } from "../components/ui/card";
 
 const { route, store, ref, computed, reactive, watchEffect, watch } = imports();
 
@@ -48,9 +48,9 @@ const onChangeChannel = (channel_id: string) => {
 const isActive = ref(
     currentGuild.value.states?.essantials?.welcome?.isActive ?? false
 );
+const isLoaded = ref(true);
 const showSaveCard = ref(false);
 const showChannelsDropdown = ref(false);
-const isLoaded = ref(true);
 
 watch(currentGuild, (val) => {
     (isActive.value = val.states?.essantials?.welcome?.isActive ?? false),

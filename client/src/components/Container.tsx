@@ -1,13 +1,33 @@
-import { defineComponent, ref, computed, watch } from "vue";
-import classNames from "classnames";
-import { DashboardHeader } from "../components/Header";
-import { DashboardLeftside } from "../components/Leftside";
+import { cn } from "../lib/utilts";
+import { SaveCard } from "./ui/card";
 import imports from "../utils/imports";
-import eventListenerMixin from "../plugins/eventListenerMixin";
-import { SaveCard } from "../components/ui/Card";
+import eventListenerMixin from "../mixins/eventListener";
+import { DashboardLeftside } from "../components/Leftside";
+import { defineComponent, ref, computed, watch } from "vue";
+import { DashboardHeader, AppHeader } from "../components/Header";
 
-export default defineComponent({
-  name: "Dashboard",
+export const AppContainer = defineComponent({
+  props: {
+    animation: {
+      type: String,
+      default: "left",
+    },
+  },
+  render() {
+    return (
+      <>
+        <AppHeader />
+        <div class="transition-all duration-700 flex flex-col items-center mb-20 mt-16 lg:mt-20 w-full">
+          <div v-motion-slide-visible-once-left>
+            {this.$slots.default ? this.$slots.default() : null}
+          </div>
+        </div>
+      </>
+    );
+  },
+});
+
+export const DashboardContainer = defineComponent({
   props: {
     title: {
       type: String,
@@ -25,12 +45,12 @@ export default defineComponent({
       type: Boolean,
       default: false,
     },
-    isLoaded: {
+    isSaveLoaded: {
       type: Boolean,
-      default: false,
+      default: true,
     },
   },
-  emits: ["toggle", "save"],
+  emits: ["save"],
   setup() {
     const showLeftside = ref(false);
     const { store, router, route } = imports();
@@ -62,11 +82,11 @@ export default defineComponent({
         />
         <div
           v-motion-slide-visible-once-right
-          class={classNames("lg:ml-[300px] max-lg:pt-20 lg:pt-32 py-20")}
+          class="lg:ml-[300px] max-lg:pt-20 lg:pt-32 py-20"
         >
           {this.$props.title && this.$props.description && (
             <div
-              class={classNames(
+              class={cn(
                 "transition-all flex flex-col m-auto w-[95%] lg:w-[90%] mb-6 gap-y-2",
                 this.showLeftside
                   ? "max-lg:opacity-60 max-lg:pointer-events-none max-lg:blur-sm"
@@ -82,7 +102,7 @@ export default defineComponent({
             </div>
           )}
           <div
-            class={classNames(
+            class={cn(
               "transition-all flex flex-col items-center mt-2",
               this.showLeftside
                 ? "max-lg:opacity-60 max-lg:pointer-events-none max-lg:blur-sm"
@@ -101,9 +121,9 @@ export default defineComponent({
 
         <div class="flex flex-col items-center lg:ml-[300px]">
           <SaveCard
-            isOpen={this.showSaveCard}
+            isOpen={this.$props.showSaveCard}
+            isSaveLoaded={this.$props.isSaveLoaded}
             onSave={() => this.$emit("save")}
-            isLoaded={this.isLoaded}
           />
         </div>
       </>

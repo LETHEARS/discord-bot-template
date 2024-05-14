@@ -1,4 +1,4 @@
-import classNames from "classnames";
+import { cn } from "../../lib/utilts";
 import { defineComponent, ref, watch } from "vue";
 
 const Progress = defineComponent({
@@ -35,7 +35,7 @@ const Progress = defineComponent({
     const { width } = this;
     return (
       <div
-        class={classNames(
+        class={cn(
           "transition-all duration-300 fixed h-[2px] rounded-full bg-gradient-to-tr from-blue-600 to-blue-700 top-0 z-[999]",
           parseInt(this.width.split("%").toString()) >= 100 ||
             parseInt(this.width.split("%").toString()) <= 0

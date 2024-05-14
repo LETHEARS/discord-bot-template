@@ -1,12 +1,11 @@
-import { defineComponent, PropType } from "vue";
+import { defineComponent, PropType, h } from "vue";
 import imports from "../../utils/imports";
-import { ArrowIcon, AddIcon } from "../ui/Icon";
-import { BaseButton } from "../ui/Base";
-import { Dropdown, DropdownButton, DropdownTitle } from "../ui/Dropdown";
-import { availableLanguages } from "../../plugins/i18next";
+import { ArrowIcon, AddIcon } from "../ui/icon";
+import { BaseButton } from "../ui/base";
+import { Dropdown, DropdownButton, DropdownTitle } from "../ui/dropdown";
 import { Spinner } from "./Loader";
-import classNames from "classnames";
-import eventListenerMixin from "../../plugins/eventListenerMixin";
+import eventListenerMixin from "../../mixins/eventListener";
+import { cn } from "../../lib/utilts";
 
 const ProfileDropdown = defineComponent({
   name: "ProfileDropdown",
@@ -63,19 +62,19 @@ const ProfileDropdown = defineComponent({
   },
 
   render() {
+    const { showDropdown, $t, avatarURL, user, store } = this;
     const { VITE_DISCORD_SUPPORT_SERVER, VITE_DISCORD_OAUTH2_URL } = import.meta
       .env;
-    const { showDropdown, $t, $i18next, avatarURL, user, store } = this;
 
     if (!store._isLogin) {
-      return (
+      return h(
         <BaseButton className="py-2.5 px-8" redirect={VITE_DISCORD_OAUTH2_URL}>
           {$t("Dropdown.ProfileDropdown.Button.login")}
         </BaseButton>
       );
     }
 
-    return (
+    return h(
       <div id="ProfileDropdown" class="relative">
         {/**Open Profile Dropdown */}
         <button
@@ -120,22 +119,7 @@ const ProfileDropdown = defineComponent({
           <DropdownTitle>
             {$t("Dropdown.ProfileDropdown.Title.settings")}
           </DropdownTitle>
-          <DropdownButton
-            onClick={() => {
-              const currentTheme =
-                localStorage.getItem("theme")?.toLowerCase() ?? "dark";
-              const classList = document.documentElement.classList;
-              if (/dark/.test(currentTheme)) {
-                localStorage.setItem("theme", "light");
-                classList.remove("dark");
-                classList.add("light");
-              } else {
-                localStorage.setItem("theme", "dark");
-                classList.add("dark");
-                classList.remove("light");
-              }
-            }}
-          >
+          <DropdownButton onClick={this.$theme.changeTheme}>
             {$t("Dropdown.ProfileDropdown.Button.theme")}
           </DropdownButton>
           <DropdownButton
@@ -155,11 +139,10 @@ const ProfileDropdown = defineComponent({
 
         {/**Language Dropdwon */}
         <Dropdown isOpen={showDropdown.languageDropdown}>
-          {availableLanguages.map((language) => (
+          {this.$i18n.languages.map((language) => (
             <DropdownButton
               onClick={() => {
-                $i18next.changeLanguage(language.lng);
-                localStorage.setItem("lng", language.lng);
+                this.$i18n.changeLanguage(language.id);
                 showDropdown.languageDropdown = false;
               }}
             >
@@ -202,7 +185,7 @@ const GuildsDropdown = defineComponent({
     const { showGuildsDropdown, currentGuild, toggleOpen, added } = this;
 
     if (!currentGuild?.id || added.length < 0) {
-      return (
+      return h(
         <button class="flex justify-between py-3 px-4 w-full overflow-hidden text-black dark:text-gray-100 bg-gray-100 dark:bg-dark-200 rounded-lg transition-all border border-solid dark:border-dark-100 pointer-events-none">
           <Spinner className="w-6 h-6" />
           <ArrowIcon isActive={showGuildsDropdown} />
@@ -210,11 +193,11 @@ const GuildsDropdown = defineComponent({
       );
     }
 
-    return (
+    return h(
       <div class="relative w-full" id="GuildsDropdown">
         <button
           onClick={toggleOpen}
-          class={classNames(
+          class={cn(
             "transition-all flex justify-between w-full py-3 px-4 rounded-lg border border-solid text-black dark:text-gray-100 bg-gray-100 dark:bg-dark-200 dark:border-dark-100",
             showGuildsDropdown
               ? "ring-opacity-30 ring-[4px] ring-blue-500"
@@ -249,7 +232,7 @@ const GuildsDropdown = defineComponent({
           {added.map((guild) => (
             <router-link
               to={`/dashboard/${guild.id}`}
-              class={classNames(
+              class={cn(
                 "flex items-center w-full gap-x-3 p-2 rounded-lg transition hover:bg-opacity-10 dark:hover:bg-opacity-5 text-base text-black dark:text-gray-100 hover:bg-gray-400",
                 currentGuild.id == guild.id
                   ? "bg-gray-400 bg-opacity-20 dark:bg-opacity-10"
@@ -309,7 +292,7 @@ const ChannelsDropdown = defineComponent({
     } = this;
 
     if (channels.length < 1) {
-      return (
+      return h(
         <button class="flex justify-between py-3 px-4 w-full md:w-96 my-2 overflow-hidden text-black dark:text-gray-100 bg-gray-100 dark:bg-dark-200 rounded-lg transition-all border border-solid dark:border-dark-100 pointer-events-none">
           <Spinner className="w-5 h-5" />
           <ArrowIcon className="" isActive={isOpen} />
@@ -317,7 +300,7 @@ const ChannelsDropdown = defineComponent({
       );
     }
 
-    return (
+    return h(
       <>
         <div class="transition-all text-sm opacity-80 pl-1 font-poppins-regular text-black dark:text-gray-100">
           {title}
@@ -327,7 +310,7 @@ const ChannelsDropdown = defineComponent({
           <button
             id={this.id}
             onClick={() => this.$emit("show")}
-            class={classNames(
+            class={cn(
               "transition-all group flex justify-between py-3 px-4 w-full rounded-lg border border-solid dark:hover:border-opacity-60 text-opacity-60 hover:text-opacity-100 dark:text-opacity-60 dark:hover:text-opacity-100 text-black dark:text-gray-100 bg-light-300 dark:bg-dark-200 dark:border-dark-100",
               isOpen
                 ? "ring-opacity-30 ring-[4px] ring-blue-500"

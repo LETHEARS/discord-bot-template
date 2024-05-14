@@ -1,10 +1,10 @@
-import { defineComponent } from "vue";
-import { Leftside, LeftsideButton, LeftsideCategory } from "./ui/Leftside";
+import { defineComponent, h } from "vue";
+import { Leftside, LeftsideButton, LeftsideCategory } from "./ui/leftside";
 import Logo from "../assets/images/logo.png";
 import { GuildsDropdown } from "./shared/Dropdown";
-import { CategoryIcon, HelloIcon } from "./ui/Icon";
+import { CategoryIcon, HelloIcon } from "./ui/icon";
 import imports from "../utils/imports";
-import classNames from "classnames";
+import { cn } from "../lib/utilts";
 
 const DashboardLeftside = defineComponent({
   name: "DashboardLeftside",
@@ -28,13 +28,13 @@ const DashboardLeftside = defineComponent({
   render() {
     const { $t, $emit, isOpen, currentGuild, category } = this;
 
-    return (
+    return h(
       <Leftside
         id="DashboardLeftside"
         required={true}
         isOpen={isOpen}
         direction="left"
-        class={classNames("max-md:w-full md:w-[300px] items-center z-[998]")}
+        class={cn("max-md:w-full md:w-[300px] items-center z-[998]")}
       >
         <div class="transition-all flex w-[95%] md:w-[90%] group max-lg:justify-start lg:justify-center items-center gap-x-3 h-16 lg:h-20">
           <button

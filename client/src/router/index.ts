@@ -24,7 +24,7 @@ const routes = [
     {
         name: "logout",
         path: "/logout",
-        component: (): Promise<RouteComponent> => import("../views/Logout"),
+        component: (): Promise<RouteComponent> => import("../views/Logout.vue"),
     },
     {
         name: "callback",

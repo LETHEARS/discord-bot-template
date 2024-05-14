@@ -1,5 +1,5 @@
 <template>
-    <dashboard-layout :title="$t('Dashboard.Index.title')" :description="$t('Dashboard.Index.description')">
+    <dashboard-container :title="$t('Dashboard.Index.title')" :description="$t('Dashboard.Index.description')">
         dasda
-    </dashboard-layout>
+    </dashboard-container>
 </template>

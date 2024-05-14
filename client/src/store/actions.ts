@@ -18,6 +18,8 @@ export default {
             return;
         }
 
+        (this as any).isLoading = true;
+
         const getUser = async () => {
             return await getReq("/user");
         };
@@ -25,8 +27,8 @@ export default {
         try {
             const response = await this.makeRequest(getUser);
             if (response.data.success) {
-                (this as any).getters._getUser = response.data;
                 (this as any)._isLogin = true;
+                (this as any).getters._getUser = response.data;
             }
         } finally {
         }
@@ -86,6 +88,7 @@ export default {
     },
 
     handleUnauthorized() {
-        location.href = "/users/logout";
+        if (!window.location.pathname.includes("/logout"))
+            location.href = "/logout";
     },
 };

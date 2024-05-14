@@ -1,7 +1,6 @@
 import { defineComponent } from "vue";
 
-const BoxAnimation = defineComponent({
-  name: "BoxAnimation",
+export default defineComponent({
   render() {
     return (
       <div class="transition-all duration-1000 bg-transparent h-screen w-full opacity-5 hover:opacity-10">
@@ -51,5 +50,3 @@ const BoxAnimation = defineComponent({
     );
   },
 });
-
-export { BoxAnimation };

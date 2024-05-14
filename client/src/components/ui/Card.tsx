@@ -1,40 +1,36 @@
-import { defineComponent } from "vue";
-import { ArrowIcon } from "./Icon";
-import classNames from "classnames";
-import { BaseToggle, BaseButton } from "./Base";
+import { ArrowIcon } from "./icon";
+import { cn } from "../../lib/utilts";
+import { defineComponent, h } from "vue";
 import imports from "../../utils/imports";
 import { Spinner } from "../shared/Loader";
+import { BaseToggle, BaseButton } from "./base";
 
 const SaveCard = defineComponent({
-  name: "SaveCard",
   props: {
     isOpen: {
       type: Boolean,
       default: false,
     },
-    isLoaded: {
+    isSaveLoaded: {
       type: Boolean,
       default: true,
     },
   },
   setup() {
-    const { store, ref } = imports();
-
-    const isLoaded = ref(true);
-
+    const { ref, store } = imports();
+    const isResetLoaded = ref(true);
     const onReset = async () => {
-      isLoaded.value = false;
+      isResetLoaded.value = false;
       await store.initGuild();
-      isLoaded.value = true;
+      isResetLoaded.value = true;
     };
-
-    return { onReset, isLoaded };
+    return { onReset, isResetLoaded };
   },
   emits: ["save"],
   render() {
-    return (
+    return h(
       <div
-        class={classNames(
+        class={cn(
           "transition-all fixed flex items-center bottom-5 lg:bottom-10 w-[95%] lg:w-[60%] rounded-lg h-20 justify-between pl-5 pr-5 bg-light-300 dark:bg-dark-100",
           this.isOpen
             ? "opacity-100 translate-y-[0px] pointer-events-auto"
@@ -49,7 +45,7 @@ const SaveCard = defineComponent({
             onClick={this.onReset}
             class="transition-all flex items-center justify-center h-12 rounded-lg w-full sm:w-24 text-black dark:text-gray-100 bg-light-100 hover:bg-opacity-60 dark:bg-dark-200 dark:hover:bg-opacity-60"
           >
-            {this.isLoaded ? (
+            {this.isResetLoaded ? (
               this.$t("Dashboard.SaveCard.Button.reset")
             ) : (
               <Spinner className="w-6 h-6" />
@@ -59,7 +55,7 @@ const SaveCard = defineComponent({
             className="h-12 w-full sm:w-32"
             onClick={() => this.$emit("save")}
           >
-            {this.$props.isLoaded ? (
+            {this.$props.isSaveLoaded ? (
               this.$t("Dashboard.SaveCard.Button.save")
             ) : (
               <Spinner className="w-6 h-6" />
@@ -72,7 +68,6 @@ const SaveCard = defineComponent({
 });
 
 const BaseCheckCard = defineComponent({
-  name: "BaseCheckCard",
   props: {
     isOpen: {
       type: Boolean,
@@ -85,10 +80,10 @@ const BaseCheckCard = defineComponent({
   render() {
     const { $emit, isOpen, title, description } = this;
 
-    return (
+    return h(
       <>
         <button
-          class={classNames(
+          class={cn(
             "transition-all py-4 justify-between pl-5 pr-5 flex border-b items-center w-[95%] lg:w-[90%] font-poppins-regular text-sm bg-light-200 dark:bg-dark-100 text-black dark:text-gray-100",
             isOpen
               ? "border-b border-gray-400 border-opacity-20 rounded-t-lg"
@@ -121,9 +116,9 @@ const BaseToggleCard = defineComponent({
   },
   emits: ["toggle"],
   render() {
-    return (
+    return h(
       <div
-        class={classNames(
+        class={cn(
           "transition-all py-4 justify-between pl-5 pr-5 flex border-b items-center w-[95%] lg:w-[90%] font-poppins-regular text-sm bg-light-200 dark:bg-dark-100 text-black dark:text-gray-100",
           this.isOpen
             ? "border-b border-gray-400 border-opacity-20 rounded-t-lg"

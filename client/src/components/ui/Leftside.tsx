@@ -1,7 +1,7 @@
-import { defineComponent, computed } from "vue";
+import { defineComponent, computed, h } from "vue";
 import { useRoute } from "vue-router";
-import { ArrowIcon } from "./Icon";
-import classNames from "classnames";
+import { ArrowIcon } from "./icon";
+import { cn } from "../../lib/utilts";
 
 const LeftsideButton = defineComponent({
   name: "LeftsideButton",
@@ -17,11 +17,11 @@ const LeftsideButton = defineComponent({
     const route = useRoute();
     const { $slots, path, to, isActive } = this;
 
-    return (
+    return h(
       <div class="w-full">
         <router-link
           to={to?.replace(":id", route.params.id as string)}
-          class={classNames(
+          class={cn(
             "transition-all flex justify-between items-center w-full py-2 rounded-md pl-4 pr-2",
             route.fullPath.includes(
               path?.replace(":id", route.params.id as string)!
@@ -35,13 +35,13 @@ const LeftsideButton = defineComponent({
               <div class="flex items-center h-full justify-center relative">
                 {isActive && (
                   <div
-                    class={classNames(
+                    class={cn(
                       "transition-all w-[8px] h-[8px] min-w-[8px] min-h-[8px] rounded-full bg-blue-500 animate-ping absolute"
                     )}
                   ></div>
                 )}
                 <div
-                  class={classNames(
+                  class={cn(
                     "transition-all w-[6px] h-[6px] min-w-[6px] min-h-[6px] rounded-full",
                     isActive ? "bg-blue-600" : "bg-gray-400"
                   )}
@@ -68,10 +68,10 @@ const LeftsideCategory = defineComponent({
   render() {
     const { $slots, isOpen, $emit } = this;
 
-    return (
+    return h(
       <button
         onClick={() => $emit("click")}
-        class={classNames(
+        class={cn(
           "flex items-center w-full justify-between pl-2 my-2 z-40 text-black dark:text-gray-100"
         )}
       >
@@ -120,10 +120,10 @@ const Leftside = defineComponent({
       }
     });
 
-    return (
+    return h(
       <div
         id={id}
-        class={classNames(
+        class={cn(
           "scrollbar fixed h-full top-0 transition-all overflow-x-hidden overflow-y-auto flex flex-col items-center bg-light-200 dark:bg-dark-100",
           leftSideClasses.value
         )}
